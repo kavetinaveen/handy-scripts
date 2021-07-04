@@ -4,8 +4,8 @@ import numpy as np
 import itertools
 
 # Read sample data and results file
-df = pd.read_excel('./toto.xlsx')
-result = pd.read_excel('./result.xlsx')
+df = pd.read_csv('./toto.csv')
+result = pd.read_csv('./result.csv')
 
 # Function to generate solutions
 def generate_solutions(df, generate_all=False):
