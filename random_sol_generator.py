@@ -33,4 +33,4 @@ def generate_solutions(df, generate_all=False):
     return sol
 
 results_all = pd.DataFrame(generate_solutions(df, generate_all=True))
-result_all.to_csv('all_solutions.csv', index=False)
+results_all.to_csv('all_solutions.csv', index=False)
