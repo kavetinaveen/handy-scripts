@@ -32,5 +32,5 @@ def generate_solutions(df, generate_all=False):
             print("Congratulations!!!")
     return sol
 
-results_all = generate_solutions(df, generate_all=True)
-print(results_all)
+results_all = pd.DataFrame(generate_solutions(df, generate_all=True))
+result_all.to_csv('all_solutions.csv', index=False)
