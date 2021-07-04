@@ -31,3 +31,6 @@ def generate_solutions(df, generate_all=False):
         if list(element) == result_list:
             print("Congratulations!!!")
     return sol
+
+results_all = generate_solutions(df, generate_all=True)
+print(results_all)
