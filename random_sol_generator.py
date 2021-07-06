@@ -4,7 +4,7 @@ import numpy as np
 import itertools
 
 # Read sample data and results file
-df = pd.read_csv('./toto.csv')
+df = pd.read_csv('./Toto_2.csv')
 result = pd.read_csv('./result.csv')
 
 # Function to generate solutions
@@ -18,8 +18,8 @@ def generate_solutions(df, generate_all=False):
     :return sol: list of all possible solutions or sample solutions generated for the given sample
     :return type: list of lists
     '''
-    df['tmp'] = df.apply(lambda x: [str(x['1']), 'X' if x['X'] else 0, '2' if x['2'] else 0], axis=1)
-    df['tmp'] = df.apply(lambda x: [y for y in x['tmp'] if y != 0], axis=1)
+    df['tmp'] = df.apply(lambda x: [str(x['1']), 'X' if x['X'] else '0', '2' if x['2'] else '0'], axis=1)
+    df['tmp'] = df.apply(lambda x: [y for y in x['tmp'] if y != '0'], axis=1)
     if generate_all:
         pos_sol = [['1', 'X', '2']]*len(df)
     else:
