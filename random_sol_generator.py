@@ -24,7 +24,7 @@ def generate_solutions(df, generate_all=False):
         pos_sol = [['1', 'X', '2']]*len(df)
     else:
         pos_sol = df['tmp'].tolist()
-    result_list = result['realresult'].tolist()
+    result_list = [str(x) for x in result['realresult'].tolist()]
     sol = []
     k = 0
     for element in itertools.product(*pos_sol):
