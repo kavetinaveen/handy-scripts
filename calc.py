@@ -15,6 +15,10 @@ df_1_2['Number_Away'] = None
 df_1_2['Win_Away'] = None
 df_1_2['WinPercentage_Away'] = None
 df_1_2['WinPercentage_Away_3'] = None
+df_1_2['HomeScored'] = None
+df_1_2['HomeConceded'] = None
+df_1_2['AwayScored'] = None
+df_1_2['AwayConceded'] = None
 for i in range(len(df_1_2)):
     date = df_1_2.loc[i, 'Date']
     hteam = df_1_2.loc[i, 'HomeTeam']
@@ -31,6 +35,16 @@ for i in range(len(df_1_2)):
             df_1_2.loc[i, 'Win_Home'] = len(df_sub_home[df_sub_home['WinningTeam']==hteam])
             df_1_2.loc[i, 'WinPercentage_Home'] = len(df_sub_home[df_sub_home['WinningTeam']==hteam])/len(df_sub_home)
             df_1_2.loc[i, 'WinPercentage_Home_3'] = len(df_sub_home_3[df_sub_home_3['WinningTeam']==hteam])/len(df_sub_home_3)
+            
+            pts_h_1 = df_sub_home[df_sub_home['HomeTeam']==hteam]['HomePts'].sum()
+            pts_h_2 = df_sub_home[df_sub_home['AwayTeam']==hteam]['AwayPts'].sum()
+            
+            pts_h_o_1 = df_sub_home[df_sub_home['HomeTeam']==hteam]['AwayPts'].sum()
+            pts_h_o_2 = df_sub_home[df_sub_home['AwayTeam']==hteam]['HomePts'].sum()
+            
+            df_1_2.loc[i, 'HomeScored'] = (pts_h_1+pts_h_2)/len(df_sub_home)
+            df_1_2.loc[i, 'HomeConceded'] = (pts_h_o_1+pts_h_o_2)/len(df_sub_home)
+            
         if len(df_sub_away) > 0:
             df_sub_away['WinningTeam'] = df_sub_away.apply(lambda x: x['HomeTeam'] if x['HomePts'] > x['AwayPts'] else x['AwayTeam'], axis=1)
             df_sub_away['WinningTeam'] = df_sub_away.apply(lambda x: 'Tie' if x['HomePts'] == x['AwayPts'] else x['WinningTeam'], axis=1)
@@ -39,6 +53,15 @@ for i in range(len(df_1_2)):
             df_1_2.loc[i, 'Win_Away'] = len(df_sub_away[df_sub_away['WinningTeam']==ateam])
             df_1_2.loc[i, 'WinPercentage_Away'] = len(df_sub_away[df_sub_away['WinningTeam']==ateam])/len(df_sub_away)
             df_1_2.loc[i, 'WinPercentage_Away_3'] = len(df_sub_away_3[df_sub_away_3['WinningTeam']==ateam])/len(df_sub_away_3)
+            
+            pts_a_1 = df_sub_away[df_sub_away['HomeTeam']==ateam]['HomePts'].sum()
+            pts_a_2 = df_sub_away[df_sub_away['AwayTeam']==ateam]['AwayPts'].sum()
+            
+            pts_a_o_1 = df_sub_away[df_sub_away['HomeTeam']==ateam]['AwayPts'].sum()
+            pts_a_o_2 = df_sub_away[df_sub_away['AwayTeam']==ateam]['HomePts'].sum()
+            
+            df_1_2.loc[i, 'AwayScored'] = (pts_a_1+pts_a_2)/len(df_sub_home)
+            df_1_2.loc[i, 'AwayConceded'] = (pts_a_o_1+pts_a_o_2)/len(df_sub_home)
 
 df_3 = df.copy()
 hTeam = df_3['HomeTeam'].unique()
