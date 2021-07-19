@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv('./tuekysuperlig.csv', engine='python')
+df = pd.read_csv('./tuekysuperlig.csv', engine='python', encoding= 'unicode_escape')
 df['Date'] = pd.to_datetime(df['Date'], format="%d.%m.%Y")
 df = df.sort_values(['Date']).reset_index(drop=True)
 df['HomeTeam'] = df['HomeTeam'].apply(lambda x: ''.join(e for e in x if e.isalnum()))
@@ -94,5 +94,16 @@ df_3 = df_3.drop(['Number_Hometeam', 'Score_Hometeam', 'Number_Awayteam', 'Score
 df_3 = df_3.where(pd.notnull(df_3), None)
 
 df_final = df_1_2.merge(df_3[['Date', 'HomeTeam', 'AwayTeam', 'WinPercentage_Hometeam_step_3', 'WinPercentage_Awayteam_step_3']], on=['Date', 'HomeTeam', 'AwayTeam'], how='left')
+
+df_final['row_no'] = range(len(df_final))
+df_final['HomeScored_Overall'] = df_final['HomePts'][1:].cumsum()
+df_final['HomeScored_Overall'] = df_final['HomeScored_Overall']/df_final['row_no']
+df_final['HomeConceded_Overall'] = df_final['AwayPts'][1:].cumsum()
+df_final['HomeConceded_Overall'] = df_final['HomeConceded_Overall']/df_final['row_no']
+
+df_final['AwayScored_Overall'] = df_final['AwayPts'][1:].cumsum()
+df_final['AwayScored_Overall'] = df_final['AwayScored_Overall']/df_final['row_no']
+df_final['AwayConceded_Overall'] = df_final['HomePts'][1:].cumsum()
+df_final['AwayConceded_Overall'] = df_final['AwayConceded_Overall']/df_final['row_no']
 
 df_final.to_csv('output.csv', index=False)
